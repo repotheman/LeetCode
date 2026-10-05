@@ -1,46 +1,33 @@
 class Solution {
 public:
-    bool possible(vector<int>&piles, int speed, int h){
-        long long time = 0;
- 
-        for(int i = 0; i < piles.size(); i++){
- 
-            if(piles[i] < speed) time += 1;
-            else{
- 
-                time += piles[i] / speed;
- 
-                if(piles[i] % speed) time += 1;
+    bool canEatAll(vector<int> & piles, int mid, int h){
+        int actualHours = 0;
+
+        for(int &x : piles){
+            actualHours += x/mid;
+            if(x%mid != 0){
+                actualHours++;
             }
-            
         }
- 
-        
-            return time <= h;
+
+        return actualHours <= h;
     }
     int minEatingSpeed(vector<int>& piles, int h) {
- 
         int n = piles.size();
-        int low = 1;
-        int high = *max_element(piles.begin(), piles.end());
-        int ans = high;
- 
-        while(low <= high){
- 
-            int mid = low + (high - low) / 2;
- 
-            if(possible(piles, mid, h)){
- 
-                high = mid - 1;
-                ans = mid;
-            }else{
-                low = mid + 1;
+        int l = 1;
+        int r = *max_element(begin(piles), end(piles));
+
+        while(l< r){
+            int mid = l + (r-l)/2;
+
+            if(canEatAll(piles, mid, h)){
+                r = mid;
+            }
+            else{
+                l = mid + 1;
             }
         }
- 
-        return ans;
- 
- 
-        
+
+        return l;
     }
 };
